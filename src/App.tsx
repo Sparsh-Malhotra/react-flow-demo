@@ -1,6 +1,6 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import "./App.css";
-import { Navbar, Sidebar } from "./Components";
+import { MessageNode, Navbar, Sidebar } from "./Components";
 import { AppContext } from "./Context";
 import ReactFlow, {
   Connection,
@@ -14,9 +14,21 @@ import "reactflow/dist/style.css";
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
+const nodeTypes = { message: MessageNode };
+
 function App() {
-  const { nodes, edges, setNodes, onNodesChange, setEdges, onEdgesChange } =
-    useContext(AppContext) || {};
+  const {
+    nodes,
+    edges,
+    mode,
+    selectedNode,
+    setNodes,
+    onNodesChange,
+    setEdges,
+    onEdgesChange,
+    setMode,
+    setSelectedNode,
+  } = useContext(AppContext) || {};
 
   const reactFlowWrapper = useRef(null);
 
@@ -32,6 +44,19 @@ function App() {
     (params: Connection) => setEdges!((eds) => addEdge(params, eds)),
     []
   );
+
+  const handleSaveNode = (value: string) => {
+    const updatedNodes = [...nodes!].map((node) => {
+      if (node.id === selectedNode) {
+        node.data.label = value;
+      }
+      return node;
+    });
+
+    setNodes!(updatedNodes);
+    setMode!("add");
+    setSelectedNode!("");
+  };
 
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -51,7 +76,7 @@ function App() {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node` },
+        data: { label: "Message" },
       };
 
       setNodes!((nds) => nds.concat(newNode));
@@ -61,10 +86,11 @@ function App() {
 
   return (
     <main className="h-screen w-full flex flex-col">
-      <Navbar />
-      <section className="flex h-full dndflow">
-        <Sidebar />
-        <ReactFlowProvider>
+      <ReactFlowProvider>
+        <Navbar />
+        <section className="flex h-full dndflow">
+          <Sidebar mode={mode!} onChangeMessage={handleSaveNode} />
+
           <div
             className="px-3 py-1 reactflow-wrapper w-full h-full"
             ref={reactFlowWrapper}
@@ -78,13 +104,13 @@ function App() {
               onDrop={onDrop}
               onDragOver={onDragOver}
               onConnect={onConnect}
-              fitView
+              nodeTypes={nodeTypes}
             >
               <Controls />
             </ReactFlow>
           </div>
-        </ReactFlowProvider>
-      </section>
+        </section>
+      </ReactFlowProvider>
     </main>
   );
 }
