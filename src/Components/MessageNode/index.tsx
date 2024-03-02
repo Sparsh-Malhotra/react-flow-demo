@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import {
   Handle,
   NodeProps,
@@ -14,7 +14,7 @@ const selector = (s: ReactFlowState) => ({
   nodeInternals: s.nodeInternals,
 });
 
-const MessageNode = (props: NodeProps) => {
+const MessageNode = memo((props: NodeProps) => {
   const {
     data: { label },
     id,
@@ -57,6 +57,6 @@ const MessageNode = (props: NodeProps) => {
       />
     </div>
   );
-};
+});
 
 export default MessageNode;

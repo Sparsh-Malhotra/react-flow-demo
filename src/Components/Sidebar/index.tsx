@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { AppContext } from "../../Context";
 
 interface ISidebarProps {
@@ -6,7 +6,7 @@ interface ISidebarProps {
   onChangeMessage: (value: string) => void;
 }
 
-const Sidebar = ({ mode, onChangeMessage }: ISidebarProps) => {
+const Sidebar = memo(({ mode, onChangeMessage }: ISidebarProps) => {
   const { nodes, selectedNode } = useContext(AppContext) || {};
 
   const [text, setText] = useState("");
@@ -60,6 +60,6 @@ const Sidebar = ({ mode, onChangeMessage }: ISidebarProps) => {
       )}
     </aside>
   );
-};
+});
 
 export default Sidebar;

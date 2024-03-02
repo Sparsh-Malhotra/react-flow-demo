@@ -10,6 +10,7 @@ import ReactFlow, {
   addEdge,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import { toast } from "react-toastify";
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -46,16 +47,24 @@ function App() {
   );
 
   const handleSaveNode = (value: string) => {
-    const updatedNodes = [...nodes!].map((node) => {
-      if (node.id === selectedNode) {
-        node.data.label = value;
-      }
-      return node;
-    });
+    if (value) {
+      const updatedNodes = [...nodes].map((node) => {
+        if (node.id === selectedNode) {
+          node.data.label = value;
+        }
+        return node;
+      });
 
-    setNodes!(updatedNodes);
-    setMode!("add");
-    setSelectedNode!("");
+      setNodes!(updatedNodes);
+      setMode!("add");
+      setSelectedNode!("");
+    } else {
+      toast("Please enter some message", {
+        type: "error",
+        theme: "colored",
+        position: "top-center",
+      });
+    }
   };
 
   const onDrop = useCallback(
