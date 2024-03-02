@@ -27,13 +27,13 @@ const MessageNode = memo((props: NodeProps) => {
   const nodeId = useNodeId();
 
   const handleEditNode = () => {
-    setMode!("edit");
-    setSelectedNode!(id);
+    setMode("edit");
+    setSelectedNode(id);
   };
 
   const isHandleConnectable = () => {
     const node = nodeInternals.get(nodeId!);
-    const outgoers = getOutgoers(node!, nodes!, edges!);
+    const outgoers = getOutgoers(node!, nodes, edges);
 
     return outgoers.length < 1;
   };

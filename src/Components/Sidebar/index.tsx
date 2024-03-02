@@ -14,7 +14,7 @@ const Sidebar = memo(({ mode, onChangeMessage }: ISidebarProps) => {
   useEffect(() => {
     if (selectedNode) {
       setText(
-        nodes!.filter((node) => node.id === selectedNode)?.[0]?.data.label || ""
+        nodes.filter((node) => node.id === selectedNode)?.[0]?.data.label || ""
       );
     }
   }, [selectedNode]);

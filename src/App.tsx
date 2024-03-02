@@ -42,7 +42,7 @@ function App() {
   }, []);
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges!((eds) => addEdge(params, eds)),
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     []
   );
 
@@ -55,9 +55,9 @@ function App() {
         return node;
       });
 
-      setNodes!(updatedNodes);
-      setMode!("add");
-      setSelectedNode!("");
+      setNodes(updatedNodes);
+      setMode("add");
+      setSelectedNode("");
     } else {
       toast("Please enter some message", {
         type: "error",
@@ -88,7 +88,7 @@ function App() {
         data: { label: "Message" },
       };
 
-      setNodes!((nds) => nds.concat(newNode));
+      setNodes((nds) => nds.concat(newNode));
     },
     [reactFlowInstance]
   );
@@ -98,7 +98,7 @@ function App() {
       <ReactFlowProvider>
         <Navbar />
         <section className="flex h-full dndflow">
-          <Sidebar mode={mode!} onChangeMessage={handleSaveNode} />
+          <Sidebar mode={mode} onChangeMessage={handleSaveNode} />
 
           <div
             className="px-3 py-1 reactflow-wrapper w-full h-full"
