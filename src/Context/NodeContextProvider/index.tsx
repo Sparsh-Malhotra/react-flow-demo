@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useState } from "react";
+import { PropsWithChildren, createContext, useMemo, useState } from "react";
 import {
   EdgeChange,
   NodeChange,
@@ -48,23 +48,24 @@ const NodeContextProvider = ({ children }: PropsWithChildren) => {
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [selectedNode, setSelectedNode] = useState<string>("");
 
+  const contextValues = useMemo(
+    () => ({
+      nodes,
+      edges,
+      mode,
+      selectedNode,
+      setNodes,
+      onNodesChange,
+      setEdges,
+      onEdgesChange,
+      setMode,
+      setSelectedNode,
+    }),
+    [nodes, edges, mode, selectedNode]
+  );
+
   return (
-    <AppContext.Provider
-      value={{
-        nodes,
-        edges,
-        mode,
-        selectedNode,
-        setNodes,
-        onNodesChange,
-        setEdges,
-        onEdgesChange,
-        setMode,
-        setSelectedNode,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextValues}>{children}</AppContext.Provider>
   );
 };
 

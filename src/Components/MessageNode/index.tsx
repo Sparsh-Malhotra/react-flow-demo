@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import {
   Handle,
   NodeProps,
@@ -14,7 +14,7 @@ const selector = (s: ReactFlowState) => ({
   nodeInternals: s.nodeInternals,
 });
 
-const MessageNode = (props: NodeProps) => {
+const MessageNode = memo((props: NodeProps) => {
   const {
     data: { label },
     id,
@@ -27,13 +27,13 @@ const MessageNode = (props: NodeProps) => {
   const nodeId = useNodeId();
 
   const handleEditNode = () => {
-    setMode!("edit");
-    setSelectedNode!(id);
+    setMode("edit");
+    setSelectedNode(id);
   };
 
   const isHandleConnectable = () => {
     const node = nodeInternals.get(nodeId!);
-    const outgoers = getOutgoers(node!, nodes!, edges!);
+    const outgoers = getOutgoers(node!, nodes, edges);
 
     return outgoers.length < 1;
   };
@@ -57,6 +57,6 @@ const MessageNode = (props: NodeProps) => {
       />
     </div>
   );
-};
+});
 
 export default MessageNode;

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { ReactFlowState, getOutgoers, useStore } from "reactflow";
 import { AppContext } from "../../Context";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,7 +8,7 @@ const selector = (s: ReactFlowState) => ({
   nodeInternals: s.nodeInternals,
 });
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const { nodeInternals } = useStore(selector);
   const { nodes, edges } = useContext(AppContext) || {};
 
@@ -30,10 +30,12 @@ const Navbar = () => {
             theme: "colored",
           });
         } else {
-          console.log(nodes, edges);
           localStorage.setItem("nodes", JSON.stringify(nodes));
           localStorage.setItem("edges", JSON.stringify(edges));
         }
+      } else if (nodes.length > 0) {
+        localStorage.setItem("nodes", JSON.stringify(nodes));
+        localStorage.setItem("edges", JSON.stringify(edges));
       }
     }
   };
@@ -48,6 +50,6 @@ const Navbar = () => {
       </button>
     </nav>
   );
-};
+});
 
 export default Navbar;
